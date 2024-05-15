@@ -14,7 +14,21 @@ class _CurrencyConverterMaterialPageState
   final TextEditingController textEditingController = TextEditingController();
 
   void convert() {
-    result = double.parse(textEditingController.text) * 80;
+    final input = textEditingController.text;
+    if (input.isNotEmpty) {
+      try {
+        result = double.parse(input) * 83.5;
+      } catch (e) {
+        result = 0;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid input! Please enter a valid number.'),
+          ),
+        );
+      }
+    } else {
+      result = 0;
+    }
     setState(() {});
   }
 
@@ -48,13 +62,14 @@ class _CurrencyConverterMaterialPageState
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'INR ${result != 0 ? result.toStringAsFixed(3) : result.toStringAsFixed(0)}',
+                'INR ${result != 0 ? result.toStringAsFixed(2) : '0'}',
                 style: const TextStyle(
                   fontSize: 55,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
               ),
+              const SizedBox(height: 20),
               TextField(
                 controller: textEditingController,
                 style: const TextStyle(
